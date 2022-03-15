@@ -1,0 +1,36 @@
+<nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" routerLink="/home">
+            <img src="../../assets/logo.png" width="112" height="28">
+        </a>
+
+        <a role="button" class="navbar-burger" (click)="toggleMobileView()" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" [ngClass]="{'is-active': isMobileViewActive}">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu" [ngClass]=" { 'is-active': isMobileViewActive} ">
+        <div class="navbar-start" *ngFor="let link of links " routerLink="{{ link.path }}">
+            <a class="navbar-item is-tab">
+                {{ link.name }}
+            </a>
+        </div>
+    </div>
+
+    <div class=" navbar-end ">
+        <div class="navbar-item ">
+            <div class="buttons ">
+                <a class="button is-info ">
+                    <i class="fas fa-user-plus mr-2 "></i>
+                    <strong>SIGN UP</strong>
+                </a>
+                <a class="button ">
+                    <i class="fas fa-user mr-3 "></i>
+                    <span>LOG IN</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
