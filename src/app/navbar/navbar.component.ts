@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { Link } from "./model/navbar.model";
 
 @Component({
     selector: 'app-navbar',
@@ -11,7 +12,7 @@ export class NavbarComponent{
 
     constructor() {}
 
-    links: any[] = [
+    links: Link[] = [
         {
             name: "HOME",
             path: "/home"
