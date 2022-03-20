@@ -25,19 +25,23 @@
             </div>
             <div class="content" style="color: #fff">
                 <p class="ml-2">
-                    Stay in touch with the latest news of our company by following one of our social network accounts. Help us grow our network, subsribe for latest events, and collect special discounts for your next rents!
+                    Stay in touch with the latest news of our company by following one of our social media accounts. Help us grow our network, subsribe for latest events, and collect special discounts for your next rents!
                 </p>
             </div>
             <footer class="card-footer">
-                <a href="https://www.facebook.com" target="_blank" class="card-footer-item mt-2 mb-3">
-                    <span class="icon-text has-text-light">
-                        <span class="icon">
-                            <i class="fa-brands fa-facebook-square fa-2xl has-text-light"></i>
+                <div class="card-footer-item" *ngFor="let link of links">
+                    <a href="{{ link.path }}" target="_blank" class="mt-2 mb-3">
+                        <span class="icon-text has-text-light">
+                            <span class="icon">
+                                <i class="fa-brands fa-2xl has-text-light" ngClass="{{ link.icon }}"></i>
+                            </span>
+                        <span>
+                                {{ link.page }} PAGE
+                            </span>
                         </span>
-                    <span>FACEBOOK PAGE</span>
-                    </span>
-                </a>
-                <a href="https://www.twitter.com" target="_blank" class="card-footer-item mt-2 mb-3">
+                    </a>
+                </div>
+                <!-- <a href="https://www.twitter.com" target="_blank" class="card-footer-item mt-2 mb-3">
                     <span class="icon-text has-text-light">
                         <span class="icon">
                             <i class="fa-brands fa-twitter-square fa-2xl has-text-light"></i>
@@ -53,7 +57,7 @@
                     <span>INSTAGRAM PAGE</span>
                     </span>
 
-                </a>
+                </a> -->
             </footer>
         </div>
     </div>
