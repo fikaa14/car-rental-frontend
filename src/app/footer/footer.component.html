@@ -1,0 +1,47 @@
+<footer class="footer has-text-weight-light">
+    <hr>
+    <div class="columns">
+        <div class="column">
+            <a href="http://localhost:4200/home">
+                <img src="../../assets/logo.png" alt="logo" width="112" height="28">
+            </a>
+            <p>
+                We operate with car rental services in Montenegro and the bordering countries.
+                <br>
+                <br> OUR COMPANY offers first class car hire services in Montenegro - at Podgorica airport, Tivat airport and all across Montenegro.
+            </p>
+        </div>
+        <div class="column">
+            <p class="title is-4">
+                IMPORTANT NUMBERS
+            </p>
+            <div *ngFor="let number of importantNumbers">
+                <p>{{number.institution}}: <a href="tel:{{number.number}}">{{number.number}}</a></p>
+            </div>
+        </div>
+        <div class="column">
+            <p class="title is-4">
+                ADDITIONAL SERVICES
+            </p>
+            <p>
+                OUR COMPANY also provides additional services for all of our customers, such as:
+            </p>
+            <ul>
+                <li>Cheap car rental in Montenegro</li>
+                <li>Unlimited mileage</li>
+                <li>24/7 road assistancee</li>
+                <li>No extra fees in case of delayed flights</li>
+                <li>Insurance included</li>
+            </ul>
+
+        </div>
+        <div class="column">
+            <p class="title is-4">
+                COPYRIGHT
+            </p>
+            <p>
+                OUR COMPANY, car rental in Montenegro. Copyright &copy; 2022, COMPANY D.O.O., Podgorica. All rights reserved!
+            </p>
+        </div>
+    </div>
+</footer>
