@@ -62,7 +62,6 @@ export class BookingComponent implements OnInit {
     date: string = this.yy + '-' + this.mm + '-' + this.dd;
 
     constructor(
-        private string: String
     ) {}
 
     ngOnInit(): void {
