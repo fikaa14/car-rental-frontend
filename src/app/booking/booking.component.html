@@ -1,0 +1,141 @@
+<section class="hero is-info">
+    <div class="hero-body">
+        <div class="columns">
+            <div class="column">
+                <div>
+                    <label class="is-size-5"> Pickup location </label>
+                    <div class="control has-icons-left">
+                        <div class="select is-medium">
+                            <select>
+                        <option *ngFor="let location of locations">{{ location.name }}</option>
+                    </select>
+                        </div>
+                        <div class="icon is-small is-left">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="columns">
+                    <div class="column">
+                        <label class="mr-3">Pick up</label>
+                        <div class="control mr-3">
+                            <input class="input is-medium" id="pick-up-date" type="date" value="2022-05-21">
+                        </div>
+                    </div>
+                    <div class="column">
+                        <label class="mr-3">Return</label>
+                        <div class="control mr-3">
+                            <input class="input is-medium" id="return-date" type="date" value="2022-03-21">
+                        </div>
+                    </div>
+                    <div class="column">
+                        <button class="button mt-5 is-medium">
+                            <span class="icon is-small">
+                              <i class="fas fa-search"></i>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="mt-3 ml-3">
+    <p class="title">
+        Search results
+    </p>
+
+    <hr>
+    <div class="columns">
+        <div class="column is-one-third" *ngFor="let car of cars">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title" style="font-size: xx-large;">
+                        {{ car.model }} | {{car.category}}
+                    </p>
+
+                </header>
+                <div class="card-image p-4">
+                    <figure class="image is-4by3">
+                        <img src="{{ car.imgPath }}" alt="Car image">
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="columns">
+                        <div class="column">
+                            <p>
+                                Year of production: {{ car.productionYear }}
+                            </p>
+                            <p>
+                                Mileage: {{ car.mileage }}
+                            </p>
+                            <p>
+                                Current location: {{ car.location }}
+                            </p>
+                        </div>
+                        <div class="column">
+                            <div class="columns">
+                                <div class="column">
+                                    <p class="is-size-7">
+                                        Price per day:
+                                    </p>
+                                    <p class="title is-4">
+                                        &euro; {{car.pricePerDay}}
+                                    </p>
+                                </div>
+                                <div class="column">
+                                    <button class="button is-info" *ngIf="car.isAvaliable; else notAvaliable;">
+                                        Book now
+                                    </button>
+                                    <ng-template #notAvaliable>
+                                        <button class="button is-danger" disabled>
+                                            Not avaliable
+                                        </button>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <footer class="card-footer">
+                    <div class="card-footer-item has-icon-left">
+                        <span class="icon">
+                            <i class="fa-solid fa-people-group"></i>
+                        </span>
+                        <p>
+                            {{ car.maxPeople }}
+                        </p>
+                    </div>
+                    <div class="card-footer-item has-icon-left">
+                        <span class="icon">
+                            <i class="fa-solid fa-suitcase"></i>
+                        </span>
+                        <p>
+                            {{ car.maxBaggage }}
+                        </p>
+                    </div>
+                    <div class="card-footer-item has-icon-left">
+                        <span class="icon">
+                            <i class="fa-solid fa-car"></i>
+                        </span>
+                        <p *ngIf="car.isAutomaticTransmission; else carIsManual">
+                            Automatic
+                        </p>
+                        <ng-template #carIsManual>
+                            <p>
+                                Manual
+                            </p>
+                        </ng-template>
+                    </div>
+
+
+                </footer>
+            </div>
+        </div>
+    </div>
+
+
+</div>
