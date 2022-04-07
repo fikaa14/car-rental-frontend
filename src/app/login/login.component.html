@@ -1,0 +1,54 @@
+<div id="background">
+    <div class="columns">
+        <div class="column">
+
+        </div>
+
+        <div class="column mb-6 mt-6">
+            <div class="card">
+                <div class="card-content">
+                    <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+                        <div class="field">
+                            <label class="label">Username</label>
+                            <div class="control">
+                                <input class="input is-medium" type="text" placeholder="Type username..." name="username" ngModel>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Password</label>
+                            <div class="control">
+                                <input class="input is-medium" type="password" placeholder="Type password..." name="password" ngModel>
+                            </div>
+                        </div>
+
+                        <div class="columns">
+                            <div class="column is-two-fifths"></div>
+                            <div class="column">
+                                <button class="button is-info is-medium" type="submit">Login</button>
+                            </div>
+                            <div class="column is-two-fifths"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <br>
+            <div class="columns mb-6">
+                <div class="column">
+
+                </div>
+                <div class="column is-three-fifths ml-6 mb-6">
+                    <span class="pl-1" style="background-color: white">You don't have a profile? <a routerLink="sign-up" style="color: #3e8ed0"><b>SIGN UP!</b></a></span>
+                </div>
+                <div class="column">
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="column">
+
+        </div>
+    </div>
+</div>

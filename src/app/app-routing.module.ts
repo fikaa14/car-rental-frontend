@@ -5,7 +5,9 @@ import { BookingComponent } from './booking/booking.component';
 import { ContactComponent } from './contact/contact.component';
 import { CustomerServiceComponent } from './customer-service/customer-service.component';
 import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
 import { RentalConditionsComponent } from './rental-conditions/rental-conditions.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 const routes: Routes = [
   {
@@ -31,6 +33,22 @@ const routes: Routes = [
   {
     path: 'customer-service',
     component: CustomerServiceComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'sign-up',
+    component: SignUpComponent
+  },
+  {
+    path: 'sign-up/login',
+    redirectTo: 'login'
+  },
+  {
+    path: 'login/sign-up',
+    redirectTo: 'sign-up'
   },
   {
     path: '**',

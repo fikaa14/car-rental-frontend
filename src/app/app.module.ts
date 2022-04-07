@@ -13,6 +13,10 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { AdditionalServicesComponent } from './additional-services/additional-services.component';
 import { RentalConditionsComponent } from './rental-conditions/rental-conditions.component';
 import { CustomerServiceComponent } from './customer-service/customer-service.component';
+import { LoginComponent } from './login/login.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -24,12 +28,16 @@ import { CustomerServiceComponent } from './customer-service/customer-service.co
     BookingComponent,
     AdditionalServicesComponent,
     RentalConditionsComponent,
-    CustomerServiceComponent
+    CustomerServiceComponent,
+    LoginComponent, 
+    SignUpComponent
   ],
-  imports: [
-    BrowserModule,
+  imports: [BrowserModule,
+    CommonModule,
+    FormsModule,
     HttpClientModule,
     AppRoutingModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

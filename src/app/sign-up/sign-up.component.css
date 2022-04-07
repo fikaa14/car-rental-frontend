@@ -1,0 +1,6 @@
+#background {
+    background-image: url("../../assets/background.jpg");
+    background-repeat: repeat-y;
+    background-size: cover;
+    height: 700px;
+}

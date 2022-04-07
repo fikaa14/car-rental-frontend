@@ -1,0 +1,91 @@
+<div id="background">
+    <div class="columns">
+        <div class="column"></div>
+        <div class="column mt-6">
+            <div class="card">
+                <div class="card-content">
+                    <form [formGroup]="userCreateForm" (ngSubmit)="createUser()">
+                        <div class="field">
+                            <label class="label">First name</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="Type first name..." formControlName="firstName">
+                                <p class="help is-danger" *ngIf="userCreateForm.controls['firstName'].touched && !userCreateForm.controls['firstName'].valid">First name is required!</p>
+                            </div>
+                        </div>
+
+                        <div class=" field ">
+                            <label class="label ">Last name</label>
+                            <div class="control ">
+                                <input class="input " type="text " formControlName="lastName" placeholder="Type last name... ">
+                                <p class="help is-danger" *ngIf="userCreateForm.controls['lastName'].touched && !userCreateForm.controls['lastName'].valid">Last name is required!</p>
+                            </div>
+                        </div>
+                        <div class="field ">
+                            <label class="label ">Username</label>
+                            <div class="control ">
+                                <input class="input " type="text " formControlName="username" placeholder="Type username... ">
+
+                                <!-- Required -->
+                                <p class="help is-danger" *ngIf="userCreateForm.controls['username'].touched && userCreateForm.controls['username'].errors?.['required']">Username is required!</p>
+
+                                <!-- Min length -->
+                                <p class="help is-danger" *ngIf="userCreateForm.controls['username'].errors?.['minlength'] && userCreateForm.controls['username'].touched">Username length must be over {{ userCreateForm.controls['username'].errors?.['minlength']['requiredLength'] }} charachters! </p>
+
+                                <!-- Custom synch validation -->
+                                <p class="help is-danger" *ngIf="userCreateForm.controls['username'].touched && userCreateForm.controls['username'].errors?.['usernameInvalid']">Can not use username: {{ userCreateForm.controls['username'].errors?.['usernameInvalid'] }} </p>
+
+                                <!-- Asynch validatior -->
+                                <p class="help is-danger" *ngIf="userCreateForm.controls['username'].touched && userCreateForm.controls['username'].errors?.['usernameAlreadyExists']">Username {{ userCreateForm.controls['username'].errors?.['usernameAlreadyExists'] }} already exists!</p>
+
+                                <!-- Progres bar for asynch validator -->
+                                <progress class="progress is-info" max="100" *ngIf="userCreateForm.controls['username'].pending">30%</progress>
+
+                            </div>
+                        </div>
+
+                        <div class=" field ">
+                            <label class="label">Password</label>
+                            <div class="control">
+                                <input class="input" type="password " formControlName="password" placeholder="Type password... ">
+
+                                <!-- Required validator -->
+                                <p class="help is-danger" *ngIf="userCreateForm.controls['password'].touched && userCreateForm.controls['password'].errors?.['required']">Password is required!</p>
+
+                                <!-- Min length -->
+                                <p class="help is-danger" *ngIf="userCreateForm.controls['password'].touched && userCreateForm.controls['password'].errors?.['minlength']">Password must be over 8 charachters!</p>
+
+                                <!-- Uppercase letter -->
+                                <p class="help is-danger" *ngIf="userCreateForm.controls['password'].touched && !userCreateForm.controls['password'].errors?.['containsUpperLetter']">Password must contain at least one uppercase letter!</p>
+
+                                <!-- Numeric charachter -->
+                                <p class="help is-danger" *ngIf="userCreateForm.controls['password'].touched && !userCreateForm.controls['password'].errors?.['containsNumber']">Password must contain at least one number!</p>
+
+                                <!-- Special charachter -->
+                                <p class="help is-danger" *ngIf="userCreateForm.controls['password'].touched && !userCreateForm.controls['password'].errors?.['containsSpecialCharachter']">Password must contain at least one special charachter!</p>
+
+                            </div>
+                        </div>
+                        <div class="columns">
+                            <div class="column"></div>
+                            <div class="column is-third"> <button type="submit " class="button is-info is-medium ml-1">Sign up</button></div>
+                            <div class="column"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <br>
+            <div class="columns mb-6">
+                <div class="column">
+
+                </div>
+                <div class="column is-three-fifths ml-6 mb-6">
+                    <span class="pl-1" style="background-color: white">You are already registred? <a routerLink="login" style="color: #3e8ed0"><b>LOGIN!</b></a></span>
+                </div>
+                <div class="column">
+
+                </div>
+            </div>
+        </div>
+        <div class="column"></div>
+    </div>
+</div>
