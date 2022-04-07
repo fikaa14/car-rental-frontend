@@ -10,6 +10,9 @@ import { ContactComponent } from './contact/contact.component';
 import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { AdditionalServicesComponent } from './additional-services/additional-services.component';
+import { RentalConditionsComponent } from './rental-conditions/rental-conditions.component';
+import { CustomerServiceComponent } from './customer-service/customer-service.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +22,9 @@ import { NavbarComponent } from './navbar/navbar.component';
     HomeComponent,
     FooterComponent,
     BookingComponent,
+    AdditionalServicesComponent,
+    RentalConditionsComponent,
+    CustomerServiceComponent
   ],
   imports: [
     BrowserModule,
