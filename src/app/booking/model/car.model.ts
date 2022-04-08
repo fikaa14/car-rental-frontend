@@ -1,14 +1,15 @@
+import { Category } from "./category.model";
+import { Location } from "./location.model";
+
 export interface Car {
+    id: number,
     productionYear: number,
     model: string,
-    mileage: string,
+    mileage: number,
     plateNumber: string,
     isAvaliable: boolean,
+    transmission: boolean
     imgPath: string,
-    isAutomaticTransmission: boolean,
-    pricePerDay: number,
-    maxPeople: number,
-    maxBaggage: number,
-    category: string,
-    location: string
+    category: Category,
+    location: Location
 }

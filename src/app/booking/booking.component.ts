@@ -1,39 +1,35 @@
 import { Component, OnInit } from "@angular/core";
 import { Car } from "./model/car.model";
+import { Type } from "./model/sorting.model";
+import { BookingService } from "./service/booking.service";
 
 @Component({
     selector: 'app-booking',
-    templateUrl: './booking.component.html'
+    templateUrl: './booking.component.html',
+    styleUrls: ['./booking.component.css']
 })
 export class BookingComponent implements OnInit {
 
-    cars: Car[] = [
-        {   productionYear: 2010,
-            model: "Toyota",
-            mileage: "200000",
-            plateNumber: "PGTC909",
-            isAvaliable: true,
-            imgPath: "../../assets/car1.jpg",
-            isAutomaticTransmission: true,
-            pricePerDay: 20.00,
-            category: "SUV",
-            maxPeople: 7,
-            maxBaggage: 5,
-            location: "Podgorica"
+    cars: Car[] = [];
+    isClicked: boolean = false;
+
+    sortingTypes: Type[] = [
+        {
+            name: 'Lowest price to highest',
+            path: 'price-asc'
         },
-        {   productionYear: 2012,
-            model: "Honda",
-            mileage: "100000",
-            plateNumber: "PGJD412",
-            isAvaliable: false,
-            imgPath: "../../assets/car2.jpg",
-            isAutomaticTransmission: false,
-            pricePerDay: 25.00,
-            maxPeople: 5,
-            maxBaggage: 3,
-            category: "Small car",
-            location: "Tivat"
-        }
+        {
+            name: 'Highest price to lowest',
+            path: 'price-desc'
+        },
+        {
+            name: 'Oldest car to newest',
+            path: 'production-year-asc'
+        },
+        {
+            name: 'Newest car to oldest',
+            path: 'production-year-desc'
+        },
     ];
 
     locations: any[] = [
@@ -62,10 +58,66 @@ export class BookingComponent implements OnInit {
     date: string = this.yy + '-' + this.mm + '-' + this.dd;
 
     constructor(
+        private bookingService: BookingService
     ) {}
 
     ngOnInit(): void {
         this.setDates();
+        this.getVehicles();
+    }
+
+    getCarsSorted(type: string): void{
+        
+        if(type === 'sort') {
+            this.getVehicles();
+            return;
+        }
+        
+        let sort: string = "";
+        for(let i = 0; i<this.sortingTypes.length;i++)
+        {
+            if(this.sortingTypes[i].name === type)
+            {
+                sort = this.sortingTypes[i].path;
+            }
+        }        
+
+        this.bookingService.getAllSorted(sort)
+            .subscribe(data => {
+                this.cars = data
+            });
+
+        this.isClicked = false;
+        
+    }
+
+    showAvilable() {
+        for(let car of this.cars) {
+            if(car.isAvaliable === false)
+                this.remove(this.cars, car);
+        }
+        this.isClicked = true;
+    }
+
+    private remove(cars: Car[], car: Car) {
+        let newCars: Car[] = [];
+        for(let newCar of cars) {
+            if(newCar.id != car.id)
+                newCars.push(newCar);
+            else{
+                continue;
+            }
+        }
+        this.cars = newCars;
+    }
+
+    private getVehicles() {
+        this.bookingService.getAll()
+            .subscribe(data => {
+                this.cars = data;
+            }, error => {
+                console.error();
+            });
     }
 
     private setDates(): void {
