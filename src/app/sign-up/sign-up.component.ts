@@ -19,6 +19,7 @@ export class SignUpComponent implements OnInit{
 
     createUser() {
         console.log(this.userCreateForm);
+        
         console.log(this.findInvalidControls());
         
     }
@@ -29,6 +30,7 @@ export class SignUpComponent implements OnInit{
         for (const name in controls) {
             if (controls[name].invalid) {
                 invalid.push(name);
+                invalid.push(controls[name].errors);
             }
         }
         return invalid;
@@ -89,6 +91,8 @@ export class SignUpComponent implements OnInit{
     
     private validateUsername(control: FormControl) {
         const username = control.value;
+
+        //const list: string[] = []
         return null;
     }
 }

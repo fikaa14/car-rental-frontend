@@ -11,7 +11,20 @@ import { BookingService } from "./service/booking.service";
 export class BookingComponent implements OnInit {
 
     cars: Car[] = [];
-    isClicked: boolean = false;
+    vehicleNumber: number = 1;
+    buttonNumber: number = 1;
+    size: number = 6;
+    page: number = 0;
+    activeButton: boolean = false;
+    isLast: boolean = false;
+    isFirst: boolean = true;
+    carsSorted: boolean = false;
+    sortingType: string = '';
+    categoryNames: string[] = [];
+    categorySelected: string = '';
+    categoryClicked: boolean = false;
+
+    buttons: any[] = [];
 
     sortingTypes: Type[] = [
         {
@@ -32,47 +45,90 @@ export class BookingComponent implements OnInit {
         },
     ];
 
-    locations: any[] = [
-        {
-            name: "Podgorica Airoport"
-        },
-        {
-            name: "Tivat Airoport"
-        },
-        {
-            name: "Tirana Airoport"
-        },
-        {
-            name: "Budva"
-        },
-        {
-            name: "Kotor"
-        }
-    ];
-
-    today: Date = new Date;
-    dd: string = this.getDay();
-    mm: string = this.getMonth();
-    yy: string = this.getYear();
-
-    date: string = this.yy + '-' + this.mm + '-' + this.dd;
-
     constructor(
         private bookingService: BookingService
     ) {}
 
     ngOnInit(): void {
-        this.setDates();
         this.getVehicles();
+        this.bookingService.getVehiclesNumber().subscribe(
+            data =>{ 
+                this.vehicleNumber = data;
+                this.getButtonNumber(this.vehicleNumber);
+            }
+        )
+
+        this.bookingService.getCategories().subscribe( data => {
+            this.categoryNames = data;
+        })
+        
+    }
+
+    showCategory(category: string): void {
+        this.categorySelected = category;
+        this.categoryClicked = true;
+        this.sortingTypes = [
+            {
+                name: 'Oldest car to newest',
+                path: 'production-year-asc'
+            },
+            {
+                name: 'Newest car to oldest',
+                path: 'production-year-desc'
+            }
+        ]
+        this.bookingService.getNumberOfVehiclesByCategory(category)
+            .subscribe(
+                data => {
+                    this.vehicleNumber = data;
+                    this.buttons = [];
+                    this.getButtonNumber(this.vehicleNumber);
+                }
+            )
+
+
+        this.bookingService.getByCategory(category, 0, 6).subscribe(
+            data => {
+                this.cars = data;
+            }
+        )
+    }
+
+    setActive(buttonNumber: number): void {
+        for(let button of this.buttons) {
+            button.isActive = false;
+            if(button.value === buttonNumber) {
+                button.isActive = true;
+            }
+        }
+        this.page = buttonNumber;
+
+        if(!this.carsSorted)
+            this.getVehicles();
+        else
+            this.getCarsSorted(this.sortingType);
+
+        if(this.page != 0)
+            this.isFirst = false;
+        else 
+            this.isFirst = true;
+
+        if(this.page != this.buttonNumber) 
+            this.isLast = false;
+        else 
+            this.isLast = true;
+    }
+
+    previousPage(): void {
+        this.setActive(this.page - 1);
+    }
+
+    nextPage(): void {
+        this.setActive(this.page + 1);
     }
 
     getCarsSorted(type: string): void{
-        
-        if(type === 'sort') {
-            this.getVehicles();
-            return;
-        }
-        
+
         let sort: string = "";
         for(let i = 0; i<this.sortingTypes.length;i++)
         {
@@ -81,70 +137,69 @@ export class BookingComponent implements OnInit {
                 sort = this.sortingTypes[i].path;
             }
         }        
+        console.log(sort);
+        
 
-        this.bookingService.getAllSorted(sort)
+        if(!this.categoryClicked) {
+            this.bookingService.getAllSorted(sort, this.page, this.size)
             .subscribe(data => {
                 this.cars = data
+                console.log(this.categoryClicked);
+                
             });
+        }
+        else {
+            console.log("{ sort: " + sort + " categorySelected: " + this.categoryClicked + " }");
+            
+            this.bookingService.getSortedByTypeAndCategory(sort, this.categorySelected, this.page, this.size)
+                .subscribe( data => {
+                    this.cars = data;
+                })
+            console.log(this.categoryClicked);
+            
+        }
 
-        this.isClicked = false;
+        this.carsSorted = true;
+        this.sortingType = type;
         
     }
 
-    showAvilable() {
-        for(let car of this.cars) {
-            if(car.isAvaliable === false)
-                this.remove(this.cars, car);
-        }
-        this.isClicked = true;
+    refresh(): void {
+        window.location.reload();
     }
 
-    private remove(cars: Car[], car: Car) {
-        let newCars: Car[] = [];
-        for(let newCar of cars) {
-            if(newCar.id != car.id)
-                newCars.push(newCar);
-            else{
-                continue;
-            }
+    private getButtonNumber(vehicleNumber: number) {
+        this.buttonNumber = Math.floor(vehicleNumber / this.size);
+    
+        if(vehicleNumber % this.size == 0) {
+            this.buttonNumber = this.buttonNumber - 1;
         }
-        this.cars = newCars;
+        
+        for(let i = 0; i <= this.buttonNumber; i++) {
+            this.buttons.push({
+                value: i
+            });
+        }
+
+        this.buttons[0].isActive = true;
+        if(this.page != 0)
+            this.isFirst = false;
+        else 
+            this.isFirst = true;
+
+        if(this.page != this.buttonNumber) 
+            this.isLast = false;
+        else 
+            this.isLast = true;
     }
 
     private getVehicles() {
-        this.bookingService.getAll()
+        this.bookingService.getAll(this.page, this.size)
             .subscribe(data => {
                 this.cars = data;
             }, error => {
-                console.error();
+                console.error(error);
             });
     }
-
-    private setDates(): void {
-        document.getElementById("pick-up-date")?.setAttribute("min", this.date);
-        document.getElementById("pick-up-date")?.setAttribute("value", this.date);
-        document.getElementById("return-date")?.setAttribute("min", this.date);
-        document.getElementById("return-date")?.setAttribute("value", this.date);
-    }
-
-    private getDay(): string {
-        if(this.today.getDate()>=10)
-            return this.today.getDate().toString();
-        else 
-            return '0' + this.today.getDate().toString();
-    }
-
-    private getMonth(): string {
-        const month = (this.today.getMonth() + 1);
-        if(month>=10)
-            return month.toString();
-        else 
-            return '0' + month.toString();
-    }
-
-    private getYear(): string {
-        return this.today.getFullYear().toString();
-    }
-
 
 }

@@ -3,6 +3,5 @@ export interface Category{
     maxPeopleCapacity: number,
     maxBaggageCapacity: number,
     name: string,
-    pricePerDay: number,
-    lateFee: number
+    pricePerDay: number
 }

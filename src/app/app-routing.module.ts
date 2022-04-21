@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdditionalServicesComponent } from './additional-services/additional-services.component';
 import { BookingComponent } from './booking/booking.component';
+import { VehicleComponent } from './booking/vehicle/vehicle.component';
+import { VehicleResolver } from './booking/vehicle/vehicle.resolver';
 import { ContactComponent } from './contact/contact.component';
 import { CustomerServiceComponent } from './customer-service/customer-service.component';
 import { HomeComponent } from './home/home.component';
@@ -20,7 +22,12 @@ const routes: Routes = [
   },
   {
     path: 'book-now',
-    component: BookingComponent
+    component: BookingComponent,
+  },
+  { 
+    path: 'vehicle/:id', 
+    component: VehicleComponent, 
+    resolve: {param1: VehicleResolver} 
   },
   {
     path: 'additional-services',
