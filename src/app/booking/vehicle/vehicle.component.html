@@ -9,7 +9,9 @@
                             <div class="select is-medium">
                                 <select formControlName="location">
                             <option selected disabled >Select location</option>
-                            <option *ngFor="let location of locations">{{ location.name }}</option>
+                            <option *ngFor="let location of locations" ><a>{{ location.name }}</a></option>
+
+                            <p class="help is-danger" *ngIf="bookingForm.controls['location'].errors?.['required']">Location is required</p>
                         </select>
                             </div>
                             <div class="icon is-small is-left">
@@ -27,12 +29,14 @@
                             <label class="mr-3">Pick up</label>
                             <div class="control mr-3">
                                 <input class="input is-medium" id="pick-up-date" type="date" (change)="changeDate()" formControlName="pickUpDate">
+                                <p class="help is-danger" *ngIf="bookingForm.controls['pickUpDate'].touched && bookingForm.controls['pickUpDate'].errors?.['required']" style="background-color: aliceblue; display: inline-block;">Enter pick up date</p>
                             </div>
                         </div>
                         <div class="column is-two-fifths field">
                             <label class="mr-3">Return</label>
                             <div class="control mr-3">
                                 <input class="input is-medium date" id="return-date" type="date" formControlName="returnDate">
+                                <p class="help is-danger" *ngIf="bookingForm.controls['returnDate'].touched && bookingForm.controls['returnDate'].errors?.['required']" style="background-color: aliceblue; display: inline-block;">Enter return date</p>
                             </div>
                         </div>
                     </div>
@@ -101,14 +105,24 @@
                         <div class="column is-half">
                             <div class="columns">
                                 <div class="column is-one-quarter"></div>
-                                <div class="column is-one-quarter level">
+                                <div class="column is-one-quarter level" *ngIf="car.isAvaliable; else notAvailable">
                                     <p class="is-size-5 level-item">Book this car</p>
-                                    <button type="submit" class="button is-info is-large is-fullwidth level-item">
+                                    <button type="submit" class="button is-info is-large is-fullwidth level-item" [disabled]="!bookingForm.valid ">
                                         <span class="icon ">
                                             <i class="far fa-arrow-alt-circle-down"></i>
                                         </span>
                                     </button>
                                 </div>
+                                <ng-template #notAvailable>
+                                    <div class="column is-one-quarter level">
+                                        <p class="is-size-5 level-item">Not available until {{ bookingEndDate }}</p>
+                                        <button type="submit" disabled class="button is-danger is-large is-fullwidth level-item">
+                                            <span class="icon ">
+                                                <i class="far fa-arrow-alt-circle-down"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </ng-template>
                                 <div class="column is-half"></div>
                             </div>
                         </div>
@@ -123,3 +137,6 @@
         </div>
     </section>
 </form>
+
+<app-customer-create *ngIf="isClicked" (customer)="getCustomer($event)" (showBill)="showBill($event)"></app-customer-create>
+<app-bill *ngIf="isBillActive" [pricePerDay]="pricePerDay" [numberOfDays]="numberOfDays" (bill)="getBill($event)"></app-bill>

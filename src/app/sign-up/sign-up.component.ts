@@ -1,5 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { AuthService } from "../auth/auth.service";
+import { Register } from "../auth/models/register.model";
+import { UserService } from "./service/user.service";
+import { UserValidator } from "./validators/user.validator";
 
 @Component({
     selector: 'app-sign-up',
@@ -9,59 +14,73 @@ import { FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms"
 export class SignUpComponent implements OnInit{
  
     userCreateForm!: FormGroup;
+    containsUpperCaseLetterAttribute: boolean = false;
+    containsNumberAttribute: boolean = false;
+    containsSpecialCharachterAttribute: boolean = false;
 
-    constructor() {
-    }
+    constructor(
+        private userService: UserService,
+        private authService: AuthService,
+        private router: Router
+    ) 
+    { }
 
     ngOnInit(): void {
         this.initializeForm();
     }
 
-    createUser() {
-        console.log(this.userCreateForm);
+    createUser(userCreateForm: any) {
+        const registerData: Register = userCreateForm.value;
+        const username: string = this.userCreateForm.controls['username'].value;
         
-        console.log(this.findInvalidControls());
-        
-    }
-
-    public findInvalidControls() {
-        const invalid = [];
-        const controls = this.userCreateForm.controls;
-        for (const name in controls) {
-            if (controls[name].invalid) {
-                invalid.push(name);
-                invalid.push(controls[name].errors);
-            }
+        if(username.endsWith("CompanyAdmin351") || username.endsWith("CompanyAdmin350")) {                  
+            registerData.roles = ["user", "admin"];
+        } else {
+            registerData.roles = ["admin"];
         }
-        return invalid;
+
+        this.authService.register(registerData)
+            .subscribe( () => {
+                this.router.navigate(['login']);
+            }, error => {
+                console.log(error);
+            })
+
     }
 
     private initializeForm(): void {
         this.userCreateForm = new FormGroup({
             firstName: new FormControl(null, Validators.required),
             lastName: new FormControl(null, Validators.required),
-            username: new FormControl(null, [Validators.required, Validators.minLength(6), this.validateUsername.bind(this)]),
+            username: new FormControl(null, [Validators.required, Validators.minLength(6), this.validateUsername.bind(this)], UserValidator.doesUsernameExists(this.userService)),
             password: new FormControl(null, [Validators.required, Validators.minLength(8), this.validatePassword.bind(this)]),
-          });
-
+            roles: new FormControl(null)
+        });
     }
 
     private validatePassword(control: FormControl): ValidatorFn | null{
         const password = control.value;
       
         const errors: any = {
-          containsUpperLetter: this.containsUpperLetter(password),
+          containsUpperCaseLetter: this.containsUpperLetter(password),
           containsNumber: this.containsNumber(password),
           containsSpecialCharachter: this.containsSpecialCharachter(password)
         }
-    
-        return errors;
+        
+        if(this.containsUpperCaseLetterAttribute && 
+        this.containsNumberAttribute && 
+        this.containsSpecialCharachterAttribute) {
+            return null;
+        } else {            
+            return errors;
+        }
     }
     
     private containsNumber(password: string): boolean {
         const numbers = /[1234567890]/;
         if(numbers.test(password)) {
-          return true;
+            this.containsNumberAttribute = true;
+            return true;
         } else {
           return false;
         }
@@ -70,7 +89,8 @@ export class SignUpComponent implements OnInit{
     private containsSpecialCharachter(password: string): boolean {
         const specialChars =/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
         if(specialChars.test(password)) {
-          return true;
+            this.containsSpecialCharachterAttribute = true;
+             return true;
         } else {
           return false;
         }
@@ -79,6 +99,7 @@ export class SignUpComponent implements OnInit{
     private containsUpperLetter(password: string): boolean { 
         for(let i = 0; i<password?.length; i++) {
             if(this.isUpper(password.charAt(i))) {
+                this.containsUpperCaseLetterAttribute = true;
                 return true;
             }
         }

@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
+import { AuthService } from "../auth/auth.service";
 // import { AuthService } from "../auth/services/auth.service";
 
 @Component({
@@ -9,20 +10,22 @@ import { Router } from "@angular/router";
 })
 export class LoginComponent {
 
+    wrongCredentials: boolean = false;
+
     constructor( 
-        // private authService: AuthService,
+        private authService: AuthService,
         private router: Router
         ) {}
 
     login(loginForm: any) {
         
         const loginData = loginForm.value;
-        // this.authService.authenticate(loginData)
-        //     .subscribe(data=> {
-        //         this.router.navigate(['playground']);
-        //     }, error => {
-        //         console.log("Error occured. Error data: ", error);
-        //     })
+        this.authService.login(loginData)
+            .subscribe(data=> {
+                this.router.navigate(['book-now']);
+            }, error => {
+                this.wrongCredentials = true;
+            });
         
     }
 

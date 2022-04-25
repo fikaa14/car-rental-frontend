@@ -12,8 +12,13 @@ export class VehicleService {
     ) {}
 
     getVehicle(id: number): Observable<Car> {
-        const url = `${environment.apiUrl}vehicle/get-by-id/${id}`
+        const url = `${environment.apiUrl}vehicle/get-by-id/${id}`;
         return this.httpClient.get<Car>(url);
+    }
+
+    setVehicleUnavailable(car: Car): Observable<void> {
+        const url = `${environment.apiUrl}vehicle/save-unavailable`;
+        return this.httpClient.put<void>(url, car);
     }
 
 }

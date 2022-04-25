@@ -1,4 +1,6 @@
 import { Component } from "@angular/core";
+import { Router } from "@angular/router";
+import { AuthService } from "../auth/auth.service";
 import { Link } from "./model/navbar.model";
 
 @Component({
@@ -10,7 +12,16 @@ export class NavbarComponent{
     isMobileViewActive: boolean = false;
     isUserAuthenticated: boolean = false;
 
-    constructor() {}
+    constructor(
+        private authService: AuthService,
+        private router: Router
+    ) {}
+
+    ngOnInit(): void {
+        this.authService.isAuthenticated.subscribe(data => {            
+            this.isUserAuthenticated = data;
+        });
+    }
 
     links: Link[] = [
         {
@@ -38,6 +49,12 @@ export class NavbarComponent{
             path: "/contact"
         }
     ]
+
+    logout(): void {
+        this.authService.logout();
+        this.router.navigate(["login"]);
+    }
+
 
     toggleMobileView(): void{
         this.isMobileViewActive = !this.isMobileViewActive;

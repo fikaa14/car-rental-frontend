@@ -21,7 +21,7 @@
 
     <div class=" navbar-end ">
         <div class="navbar-item ">
-            <div class="buttons ">
+            <div class="buttons " *ngIf="!isUserAuthenticated; else userAuthenticated ">
                 <a class="button is-info " routerLink="sign-up">
                     <i class="fas fa-user-plus mr-2 "></i>
                     <strong>SIGN UP</strong>
@@ -31,6 +31,18 @@
                     <span>LOG IN</span>
                 </a>
             </div>
+            <ng-template #userAuthenticated>
+                <div class="buttons">
+                    <a class="button" routerLink="sign-up">
+                        <i class="far fa-address-card mr-2"></i>
+                        <strong>Show profile</strong>
+                    </a>
+                    <a class="button is-info" (click)="logout()">
+                        <i class="fas fa-sign-out-alt mr-3"></i>
+                        <span>LOG OUT</span>
+                    </a>
+                </div>
+            </ng-template>
         </div>
     </div>
 </nav>

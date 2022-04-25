@@ -1,3 +1,4 @@
+import { Booking } from "./booking.model";
 import { Category } from "./category.model";
 import { Location } from "./location.model";
 
@@ -11,5 +12,6 @@ export interface Car {
     transmission: boolean
     imgPath: string,
     category: Category,
-    location: Location
+    location: Location,
+    bookings: Booking[]
 }

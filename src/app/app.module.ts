@@ -19,6 +19,8 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { CommonModule } from '@angular/common';
 import { VehicleComponent } from './booking/vehicle/vehicle.component';
 import { FormatPipe } from './booking/vehicle/format.pipe';
+import { CustomerCreateComponent } from './booking/vehicle/customer-create/customer-create.component';
+import { BillComponent } from './booking/vehicle/bill/bill.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { FormatPipe } from './booking/vehicle/format.pipe';
     LoginComponent, 
     SignUpComponent,
     VehicleComponent,
-    FormatPipe
+    FormatPipe,
+    CustomerCreateComponent,
+    BillComponent
   ],
   imports: [BrowserModule,
     CommonModule,

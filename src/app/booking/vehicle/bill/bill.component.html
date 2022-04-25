@@ -1,0 +1,14 @@
+<div class="columns ml-6 mt-3">
+    <div class="column">
+        <p>Day: {{today}}</p>
+    </div>
+    <div class="column">
+        <p>Taxes: {{taxes}}%</p>
+    </div>
+    <div class="column">
+        Total: {{ total }} &euro;
+    </div>
+    <div class="column">
+        <button class="button is-info" (click)="payBill()">Pay Bill</button>
+    </div>
+</div>

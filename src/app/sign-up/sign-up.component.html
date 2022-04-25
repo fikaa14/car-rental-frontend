@@ -4,7 +4,7 @@
         <div class="column mt-6">
             <div class="card">
                 <div class="card-content">
-                    <form [formGroup]="userCreateForm" (ngSubmit)="createUser()">
+                    <form [formGroup]="userCreateForm" (ngSubmit)="createUser(userCreateForm)">
                         <div class="field">
                             <label class="label">First name</label>
                             <div class="control">
@@ -37,9 +37,6 @@
                                 <!-- Asynch validatior -->
                                 <p class="help is-danger" *ngIf="userCreateForm.controls['username'].touched && userCreateForm.controls['username'].errors?.['usernameAlreadyExists']">Username {{ userCreateForm.controls['username'].errors?.['usernameAlreadyExists'] }} already exists!</p>
 
-                                <!-- Progres bar for asynch validator -->
-                                <progress class="progress is-info" max="100" *ngIf="userCreateForm.controls['username'].pending">30%</progress>
-
                             </div>
                         </div>
 
@@ -55,19 +52,19 @@
                                 <p class="help is-danger" *ngIf="userCreateForm.controls['password'].touched && userCreateForm.controls['password'].errors?.['minlength']">Password must be over 8 charachters!</p>
 
                                 <!-- Uppercase letter -->
-                                <p class="help is-danger" *ngIf="userCreateForm.controls['password'].touched && !userCreateForm.controls['password'].errors?.['containsUpperLetter']">Password must contain at least one uppercase letter!</p>
+                                <p class="help is-danger" *ngIf="userCreateForm.controls['password'].touched && !containsUpperCaseLetterAttribute">Password must contain at least one uppercase letter!</p>
 
                                 <!-- Numeric charachter -->
-                                <p class="help is-danger" *ngIf="userCreateForm.controls['password'].touched && !userCreateForm.controls['password'].errors?.['containsNumber']">Password must contain at least one number!</p>
+                                <p class="help is-danger" *ngIf="userCreateForm.controls['password'].touched && !containsNumberAttribute">Password must contain at least one number!</p>
 
                                 <!-- Special charachter -->
-                                <p class="help is-danger" *ngIf="userCreateForm.controls['password'].touched && !userCreateForm.controls['password'].errors?.['containsSpecialCharachter']">Password must contain at least one special charachter!</p>
+                                <p class="help is-danger" *ngIf="userCreateForm.controls['password'].touched && !containsSpecialCharachterAttribute">Password must contain at least one special charachter!</p>
 
                             </div>
                         </div>
                         <div class="columns">
                             <div class="column"></div>
-                            <div class="column is-third"> <button type="submit" class="button is-info is-medium ml-1">Sign up</button></div>
+                            <div class="column is-third"> <button type="submit" [disabled]="!userCreateForm.valid " class="button is-info is-medium ml-1">Sign up</button></div>
                             <div class="column"></div>
                         </div>
                     </form>

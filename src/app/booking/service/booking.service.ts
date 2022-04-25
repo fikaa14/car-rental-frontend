@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment.prod";
+import { Booking } from "../model/booking.model";
 import { Car } from "../model/car.model";
 import { Category } from "../model/category.model";
 
@@ -48,6 +49,11 @@ export class BookingService{
     getSortedByTypeAndCategory(sort: string, category: string, page: number, size: number): Observable<Car[]> {
         const url = `${environment.apiUrl}vehicle/get-sorted-by-type-and-category/${sort}&${category}?page=${page}&size=${size}`;
         return this.httpClient.get<Car[]>(url);
+    }
+
+    saveBooking(booking: Booking): Observable<void>{
+        const url = `${environment.apiUrl}booking/save-booking`;
+        return this.httpClient.post<void>(url, booking);
     }
 
 }

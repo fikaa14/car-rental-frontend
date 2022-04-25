@@ -1,0 +1,63 @@
+<form [formGroup]="customerCreateForm" (ngSubmit)="createCustomer()" class=" ml-6 mt-3 pr-6 levels is-info">
+    <p class="level-item has-text-weight-medium is-underlined">Enter informations about customer who will be renting, and driving a car</p>
+    <div class="columns">
+        <div class="column is-one-third">
+            <div class="field">
+                <label class="label">First name</label>
+                <div class="control">
+                    <input class="input" type="text" placeholder="Type first name..." formControlName="firstName">
+                    <p class="help is-danger" *ngIf="customerCreateForm.controls['firstName'].touched && !customerCreateForm.controls['firstName'].valid">First name is required!</p>
+                </div>
+            </div>
+
+            <div class=" field ">
+                <label class="label ">Last name</label>
+                <div class="control ">
+                    <input class="input " type="text " formControlName="lastName" placeholder="Type last name... ">
+                    <p class="help is-danger" *ngIf="customerCreateForm.controls['lastName'].touched && !customerCreateForm.controls['lastName'].valid">Last name is required!</p>
+                </div>
+            </div>
+        </div>
+        <div class="column is-one-third">
+            <div class="field">
+                <label class="label">Email</label>
+                <div class="control">
+                    <input class="input" type="email" placeholder="Type email..." formControlName="email">
+                    <p class="help is-danger" *ngIf="customerCreateForm.controls['email'].touched && !customerCreateForm.controls['email'].valid">Email is required!</p>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label ">Address</label>
+                <div class="control ">
+                    <input class="input " type="text " formControlName="address" placeholder="Type your address... ">
+                </div>
+            </div>
+        </div>
+        <div class="column is-one-third">
+            <div class="field">
+                <label class="label">Vehicle-permit number</label>
+                <div class="control">
+                    <input class="input" type="text" placeholder="Type your vehicle-permit number..." formControlName="vehiclePermitNumber">
+                    <p class="help is-danger" *ngIf="customerCreateForm.controls['vehiclePermitNumber'].touched && customerCreateForm.controls['vehiclePermitNumber'].errors?.['required']">Vehicle-permit number is required!</p>
+
+                    <p class="help is-danger" *ngIf="customerCreateForm.controls['vehiclePermitNumber'].touched && customerCreateForm.controls['vehiclePermitNumber'].errors?.['minlength']">Vehicle-permit number is too short!</p>
+
+                    <p class="help is-danger" *ngIf="customerCreateForm.controls['vehiclePermitNumber'].touched && customerCreateForm.controls['vehiclePermitNumber'].errors?.['maxlength']">Vehicle-permit number is too long!</p>
+                </div>
+            </div>
+
+            <div class=" field ">
+                <label class="label ">Phone number</label>
+                <div class="control ">
+                    <input class="input " type="text " formControlName="phoneNumber" placeholder="Type your phone number... ">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="level-item">
+        <button class="button is-info is-medium" type="submit" [disabled]="!customerCreateForm.valid">
+            Enter informations
+        </button>
+    </div>
+</form>

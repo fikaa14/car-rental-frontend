@@ -1,7 +1,13 @@
 import { Component } from "@angular/core";
-import { FormControl, FormGroup } from "@angular/forms";
-import { ActivatedRoute } from "@angular/router";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Bill } from "../model/bill.model";
+import { Booking } from "../model/booking.model";
 import { Car } from "../model/car.model";
+import { Customer } from "../model/customer.model";
+import { Location } from "../model/location.model";
+import { BookingService } from "../service/booking.service";
+import { LocationService } from "./service/location.service";
 import { VehicleService } from "./service/vehicle.service";
 
 @Component({
@@ -12,35 +18,24 @@ export class VehicleComponent{
     params: any;
     car!: Car;
     bookingForm!: FormGroup;
-    
-    locations: any[] = [
-        {
-            name: "Podgorica Airoport"
-        },
-        {
-            name: "Tivat Airoport"
-        },
-        {
-            name: "Tirana Airoport"
-        },
-        {
-            name: "Budva"
-        },
-        {
-            name: "Kotor"
-        }
-    ];
+    bookingEndDate?: any;
+    isClicked:boolean = false;
+    isBillActive: boolean = false;
+    customer?: Customer;
+    numberOfDays: number = 0;
+    pricePerDay: number = 0;
+    bill?: Bill;
+    startDate: Date = new Date();
+    endDate: Date = new Date();
 
-    today: Date = new Date;
-    dd: string = this.getDay();
-    mm: string = this.getMonth();
-    yy: string = this.getYear();
-
-    date: string = this.yy + '-' + this.mm + '-' + this.dd;
+    locations: Location[] = [];
 
     constructor(
         private activatedRoute: ActivatedRoute,
-        private vehicleService: VehicleService
+        private vehicleService: VehicleService,
+        private locationService: LocationService,
+        private bookingService: BookingService,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -49,9 +44,9 @@ export class VehicleComponent{
         
         const data = this.activatedRoute.snapshot.data;
         this.showVehicle(this.params.id);
-        
+        this.setLocations();
+
         this.initializeForm();
-        this.setDates();
         
     }
 
@@ -59,7 +54,14 @@ export class VehicleComponent{
         this.vehicleService.getVehicle(id)
             .subscribe(data => {
                 this.car = data;
-                console.log(this.car);
+                console.log(data);
+                for(let booking of this.car.bookings) {
+                    if(booking.isActive) {
+                        this.bookingEndDate = new Date(booking.endDate);
+                        this.bookingEndDate = this.bookingEndDate.toLocaleDateString();
+                        
+                    }
+                }
             });
     }
 
@@ -72,41 +74,81 @@ export class VehicleComponent{
     }
 
     createBooking(): void{
-        console.log(this.bookingForm);
+        this.getBookingDays();
+        this.isClicked = true;
+    }
 
+    getCustomer(customer: Customer):void {
+        this.customer = customer;
+    }
+
+    showBill(value: boolean): void {
+        this.isBillActive = value;
+        this.bookingForm
+    }
+
+    getBill(value: Bill): void {
+        this.bill = value;
+
+        this.saveBooking();
+    }
+
+    private saveBooking(): void{
+        this.vehicleService.setVehicleUnavailable(this.car)
+            .subscribe(()=>{
+                this.car.isAvaliable = false;
+                console.log("Setting car to unavailable...");
+                
+            })
+        
+        const booking: Booking = {
+            startDate: this.startDate,
+            endDate: this.endDate,
+            bill: this.bill,
+            customer: this.customer,
+            isActive: true,
+            vehicle: this.car
+        }
+
+        console.log(booking);
+
+        this.bookingService.saveBooking(booking)
+            .subscribe(()=>{
+               
+                this.router.navigate(['book-now']);
+            })
     }
 
     private initializeForm(): void {
         this.bookingForm = new FormGroup({
-            location: new FormControl(null), 
-            pickUpDate: new FormControl(null),
-            returnDate: new FormControl(null)
+            location: new FormControl(null, Validators.required), 
+            pickUpDate: new FormControl(null, Validators.required),
+            returnDate: new FormControl(null, Validators.required)
         });
     }
 
-    private setDates(): void {
-        document.getElementById("pick-up-date")?.setAttribute("min", this.date);
-        document.getElementById("pick-up-date")?.setAttribute("value", this.date);
-        document.getElementById("return-date")?.setAttribute("min", this.date);
-        document.getElementById("return-date")?.setAttribute("value",this.date);
+    private getBookingDays(): void {
+        let dayOne: Date = new Date(this.bookingForm.controls["pickUpDate"].value);
+        let dayTwo: Date = new Date(this.bookingForm.controls["returnDate"].value);
+        this.startDate = dayOne;
+        this.endDate = dayTwo;
+
+
+        let numberOfDays: number = dayTwo.getTime() - dayOne.getTime();
+        
+        numberOfDays = numberOfDays/(1000*3600*24);
+        console.log(numberOfDays);
+        this.numberOfDays = numberOfDays;
+        this.pricePerDay = this.car.category.pricePerDay;
     }
 
-    private getDay(): string {
-        if(this.today.getDate()>=10)
-            return this.today.getDate().toString();
-        else 
-            return '0' + this.today.getDate().toString();
+    private setLocations(): void {
+        this.locationService.getLocations()
+            .subscribe(data => {
+                this.locations = data;
+                console.log(data);
+                
+            })
     }
 
-    private getMonth(): string {
-        const month = (this.today.getMonth() + 1);
-        if(month>=10)
-            return month.toString();
-        else 
-            return '0' + month.toString();
-    }
-
-    private getYear(): string {
-        return this.today.getFullYear().toString();
-    }
 }
