@@ -21,4 +21,9 @@ export class VehicleService {
         return this.httpClient.put<void>(url, car);
     }
 
+    deleteVehicle(carID: number): Observable<void> {
+        const url = `${environment.apiUrl}vehicle/delete/${carID}`;
+        return this.httpClient.delete<void>(url);
+    }
+
 }

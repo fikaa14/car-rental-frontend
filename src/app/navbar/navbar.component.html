@@ -33,9 +33,9 @@
             </div>
             <ng-template #userAuthenticated>
                 <div class="buttons">
-                    <a class="button" routerLink="sign-up">
+                    <a class="button" *ngIf="isUserAdmin" routerLink="delete-vehicle">
                         <i class="far fa-address-card mr-2"></i>
-                        <strong>Show profile</strong>
+                        <strong>Delete Vehicle</strong>
                     </a>
                     <a class="button is-info" (click)="logout()">
                         <i class="fas fa-sign-out-alt mr-3"></i>

@@ -36,7 +36,7 @@ export class SignUpComponent implements OnInit{
         if(username.endsWith("CompanyAdmin351") || username.endsWith("CompanyAdmin350")) {                  
             registerData.roles = ["user", "admin"];
         } else {
-            registerData.roles = ["admin"];
+            registerData.roles = ["user"];
         }
 
         this.authService.register(registerData)

@@ -1,6 +1,9 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { AuthService } from "../auth/auth.service";
+import { ShowUserService } from "../shared/show-user.service";
+import { User } from "../sign-up/model/user.model";
+import { UserService } from "../sign-up/service/user.service";
 import { Link } from "./model/navbar.model";
 
 @Component({
@@ -11,16 +14,26 @@ export class NavbarComponent{
 
     isMobileViewActive: boolean = false;
     isUserAuthenticated: boolean = false;
+    user?: User;
+    isUserAdmin: boolean = false;
 
     constructor(
         private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private showUserService: ShowUserService,
+        private userService: UserService
     ) {}
 
     ngOnInit(): void {
         this.authService.isAuthenticated.subscribe(data => {            
             this.isUserAuthenticated = data;
+            if(this.isUserAuthenticated)
+            {
+                this.getUsername();
+            }
         });
+
+        
     }
 
     links: Link[] = [
@@ -59,4 +72,24 @@ export class NavbarComponent{
     toggleMobileView(): void{
         this.isMobileViewActive = !this.isMobileViewActive;
     }
+
+    private getUsername(): void {
+        this.showUserService.usernameEmitter.subscribe(
+            data=> {
+                this.userService.getByUsername(data)
+                    .subscribe(
+                        data => {
+                            this.user = data;
+                            for(let role of this.user.roles){
+                                if(role.name = "admin")
+                                {
+                                    this.isUserAdmin = true;
+                                }
+                            }
+                        }
+                    )
+            }
+        )
+    }
+
 }

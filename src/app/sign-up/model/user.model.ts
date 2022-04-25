@@ -1,3 +1,5 @@
+import { Role } from "src/app/booking/model/role.model";
+
 export interface User{
     id: number,
     firstName: string,
@@ -5,4 +7,5 @@ export interface User{
     username: string,
     password: string,
     isActive: boolean,
+    roles: Role[];
 }

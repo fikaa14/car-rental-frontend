@@ -21,6 +21,7 @@ import { VehicleComponent } from './booking/vehicle/vehicle.component';
 import { FormatPipe } from './booking/vehicle/format.pipe';
 import { CustomerCreateComponent } from './booking/vehicle/customer-create/customer-create.component';
 import { BillComponent } from './booking/vehicle/bill/bill.component';
+import { DeleteCarComponent } from './navbar/delete-car/delete-car.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { BillComponent } from './booking/vehicle/bill/bill.component';
     VehicleComponent,
     FormatPipe,
     CustomerCreateComponent,
-    BillComponent
+    BillComponent,
+    DeleteCarComponent
   ],
   imports: [BrowserModule,
     CommonModule,
