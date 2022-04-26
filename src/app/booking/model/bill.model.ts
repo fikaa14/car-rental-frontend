@@ -1,5 +1,5 @@
 export interface Bill {
-    is?: number,
+    id?: number,
     date: Date,
     isPaid: boolean,
     taxes: number,
