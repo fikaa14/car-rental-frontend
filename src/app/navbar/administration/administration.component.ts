@@ -4,10 +4,10 @@ import { BookingService } from "src/app/booking/service/booking.service";
 import { VehicleService } from "src/app/booking/vehicle/service/vehicle.service";
 
 @Component({
-    selector: 'app-delete-car',
-    templateUrl: './delete-car.component.html'
+    selector: 'app-administration',
+    templateUrl: './administration.component.html'
 })
-export class DeleteCarComponent implements OnInit{
+export class AdministrationComponent implements OnInit{
 
     vehicles?: Car[];
 

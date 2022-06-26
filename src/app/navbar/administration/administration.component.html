@@ -1,0 +1,37 @@
+<div class="columns">
+    <div class="column ml-2">
+        <table class="table">
+            <thead>
+                <th>ID</th>
+                <th>Production year</th>
+                <th>Model</th>
+                <th>Mileage</th>
+                <th>Plate number</th>
+                <th>Is available</th>
+                <th>Transmission</th>
+                <th>Category</th>
+                <th>Action</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let vehicle of vehicles">
+                    <td>{{ vehicle.id }}</td>
+                    <td>{{ vehicle.productionYear }}</td>
+                    <td>{{ vehicle.model }}</td>
+                    <td>{{ vehicle.mileage }}</td>
+                    <td>{{ vehicle.plateNumber }}</td>
+                    <td>{{ vehicle.isAvaliable }}</td>
+                    <td>{{ vehicle.transmission }}</td>
+                    <td>{{ vehicle.category.name }}</td>
+                    <td>
+                        <span class="icon" (click)="delete(vehicle)">
+                            <i class="fas fa-ban" style="cursor: pointer"></i>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="column">
+
+    </div>
+</div>

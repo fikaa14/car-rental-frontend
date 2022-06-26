@@ -8,7 +8,7 @@ import { ContactComponent } from './contact/contact.component';
 import { CustomerServiceComponent } from './customer-service/customer-service.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
-import { DeleteCarComponent } from './navbar/delete-car/delete-car.component';
+import { AdministrationComponent } from './navbar/administration/administration.component';
 import { RentalConditionsComponent } from './rental-conditions/rental-conditions.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 
@@ -39,8 +39,8 @@ const routes: Routes = [
     component: RentalConditionsComponent
   },
   {
-    path: 'delete-vehicle',
-    component: DeleteCarComponent
+    path: 'administration',
+    component: AdministrationComponent
   },
   {
     path: 'customer-service',

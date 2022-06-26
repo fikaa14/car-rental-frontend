@@ -81,7 +81,7 @@ export class NavbarComponent{
                         data => {
                             this.user = data;
                             for(let role of this.user.roles){
-                                if(role.name = "admin")
+                                if(role.name === "admin")
                                 {
                                     this.isUserAdmin = true;
                                 }
